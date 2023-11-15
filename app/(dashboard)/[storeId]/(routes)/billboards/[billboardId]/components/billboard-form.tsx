@@ -159,7 +159,7 @@ const BillboardForm: React.FC<BillboardFormProps> = ({ initialData }) => {
                   <FormLabel>Images</FormLabel>
                   {openUpload && (
                     <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm flex-col z-10">
-                      <div className="bg-white border w-[500px] h-[600px] rounded-xl shadow-lg shadow-muted-foreground/40 p-3">
+                      <div className="bg-white border w-[400px] lg:w-[500px] h-[600px] rounded-xl shadow-lg shadow-muted-foreground/40 p-3">
                         <FormControl>
                           <ImageUpload
                             category="product"

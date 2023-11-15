@@ -37,7 +37,6 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
             {
               ...product,
               price: parsedPrice,
-              images: product?.images || [],
             } as any
           }
           categories={categories}

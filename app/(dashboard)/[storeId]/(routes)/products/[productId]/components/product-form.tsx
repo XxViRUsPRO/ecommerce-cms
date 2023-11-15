@@ -62,13 +62,15 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const [openUpload, setOpenUpload] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Update product" : "Create product";
-  const description = initialData ? "Update your product" : "Add a new product";
-  const toastMessage = initialData ? "Product updated" : "Product created";
-  const action = initialData ? "Save changes" : "Create product";
+  const title = initialData?.id ? "Update product" : "Create product";
+  const description = initialData?.id
+    ? "Update your product"
+    : "Add a new product";
+  const toastMessage = initialData?.id ? "Product updated" : "Product created";
+  const action = initialData?.id ? "Save changes" : "Create product";
 
   const form = useForm<FormValues>({
-    defaultValues: initialData
+    defaultValues: initialData?.id
       ? {
           ...initialData,
           price: parseFloat(initialData.price.toString()),
@@ -89,7 +91,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
   const onSubmit = async (values: FormValues) => {
     try {
       setLoading(true);
-      if (initialData) {
+      if (initialData?.id) {
         const response = await axios.patch(
           `/api/${params.storeId}/products/${params.productId}`,
           values
@@ -145,7 +147,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       />
       <div className="flex justify-between items-center">
         <Heading title={title} description={description} />
-        {initialData && (
+        {initialData?.id && (
           <Button
             variant="destructive"
             size="icon"
@@ -304,7 +306,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                   <FormLabel>Images</FormLabel>
                   {openUpload && (
                     <div className="fixed inset-0 flex justify-center items-center backdrop-blur-sm flex-col z-10">
-                      <div className="bg-white border w-[500px] h-[600px] rounded-xl shadow-lg shadow-muted-foreground/40 p-3">
+                      <div className="bg-white border w-[400px] lg:w-[500px] h-[600px] rounded-xl shadow-lg shadow-muted-foreground/40 p-3">
                         <FormControl>
                           <ImageUpload
                             category="product"
