@@ -104,9 +104,7 @@ export async function PATCH(
       },
       data: {
         images: {
-          createMany: {
-            data: images,
-          },
+          create: images,
         },
       },
     });
