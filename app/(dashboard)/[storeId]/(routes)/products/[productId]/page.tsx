@@ -33,7 +33,13 @@ const ProductPage: React.FC<ProductPageProps> = async ({ params }) => {
     <div className="flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
         <ProductForm
-          initialData={{ ...product, price: parsedPrice } as any}
+          initialData={
+            {
+              ...product,
+              price: parsedPrice,
+              images: product?.images || [],
+            } as any
+          }
           categories={categories}
           sizes={sizes}
           colors={colors}

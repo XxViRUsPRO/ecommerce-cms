@@ -332,7 +332,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                         <span>Edit / Upload</span>
                       </div>
                     </Button>
-                    {field.value?.map((image, i) => (
+                    {field.value.map((image, i) => (
                       <div
                         key={i}
                         className="h-20 rounded overflow-hidden border border-input text-accent-foreground flex items-center"
