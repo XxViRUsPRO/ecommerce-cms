@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Store {
+  id         String      @id @default(uuid())
+  userId     String
+  name       String
+  billboards Billboard[] @relation("StoreBillboard")
+  categories Category[]  @relation("StoreCategory")
+  sizes      Size[]      @relation("StoreSize")
+  colors     Color[]     @relation("StoreColor")
+  products   Product[]   @relation("StoreProduct")
+  orders     Order[]     @relation("StoreOrder")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model Billboard {
+  id         String     @id @default(uuid())
+  label      String
+  imgUrl     String     @db.VarChar(512)
+  categories Category[]
+  storeId    String
+  store      Store      @relation("StoreBillboard", fields: [storeId], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([storeId])
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  products    Product[] @relation("CategoryProduct")
+  storeId     String
+  store       Store     @relation("StoreCategory", fields: [storeId], references: [id])
+  billboardId String
+  billboard   Billboard @relation(fields: [billboardId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([storeId])
+  @@index([billboardId])
+}
+
+model Size {
+  id        String    @id @default(uuid())
+  name      String
+  value     String
+  products  Product[]
+  storeId   String
+  store     Store     @relation("StoreSize", fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model Color {
+  id        String    @id @default(uuid())
+  name      String
+  value     String
+  products  Product[]
+  storeId   String
+  store     Store     @relation("StoreColor", fields: [storeId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([storeId])
+}
+
+model Product {
+  id          String         @id @default(uuid())
+  name        String
+  price       Decimal
+  images      ProductImage[]
+  orderItems  OrderItem[]
+  isFeatured  Boolean        @default(false)
+  isAvailable Boolean        @default(true)
+  storeId     String
+  store       Store          @relation("StoreProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category       @relation("CategoryProduct", fields: [categoryId], references: [id])
+  sizeId      String
+  size        Size           @relation(fields: [sizeId], references: [id])
+  colorId     String
+  color       Color          @relation(fields: [colorId], references: [id])
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([storeId])
+  @@index([categoryId])
+  @@index([sizeId])
+  @@index([colorId])
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String   @db.VarChar(512)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  orderItems OrderItem[]
+  isPaid     Boolean     @default(false)
+  phone      String      @default("")
+  address    String      @default("")
+  storeId    String
+  store      Store       @relation("StoreOrder", fields: [storeId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
