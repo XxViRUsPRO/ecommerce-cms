@@ -38,6 +38,5 @@ next-env.d.ts
 
 # custom
 baseline.sql
-
 stripe.exe
 prisma/dev.db
