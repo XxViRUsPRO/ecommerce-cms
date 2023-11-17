@@ -1,6 +1,5 @@
 import React from "react";
 
-import prisma from "@/lib/prisma";
 import Heading from "@/components/ui/heading";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -33,7 +32,7 @@ export default async function DashboardPage({
       <div className="flex-1 space-y-4 p-8 pt-6">
         <Heading title="Dashboard" description="Overview of your store" />
         <Separator />
-        <div className="grid gap-4 grid-cols-3">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-3 items-stretch">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -56,7 +55,7 @@ export default async function DashboardPage({
               <div className="text-2xl font-bold">+{salesCount}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="col-span-2 md:col-span-1">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Products In Stock

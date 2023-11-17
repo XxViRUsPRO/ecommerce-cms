@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 import "./globals.css";
 
+import { ClerkProvider } from "@/providers/clerk-provider";
 import ComponentProvider from "@/providers/component-provider";
 import { StoreModal } from "@/components/modals/store-modal";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "@/providers/theme-provider";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,23 +23,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+    <html lang="en">
+      <body className={cn("min-w-[992px]", inter.className)}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ClerkProvider>
             <ComponentProvider>
               <StoreModal />
               <Toaster />
             </ComponentProvider>
             <EdgeStoreProvider>{children}</EdgeStoreProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }
